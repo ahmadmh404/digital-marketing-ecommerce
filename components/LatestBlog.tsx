@@ -10,8 +10,6 @@ import dayjs from "dayjs";
 const LatestBlog = async () => {
   const blogs = await getLatestBlogs();
 
-  console.log({ blogs: blogs.map((blog) => ({...blog, image: {...blog.mainImage?.asset}})) })
-
   return (
     <div className="mb-10 lg:mb-20">
       <Title>Latest Blog</Title>
@@ -35,8 +33,7 @@ const LatestBlog = async () => {
                   {blog?.blogcategories?.map((item, index) => (
                     <p
                       key={index}
-                      className="font-semibold text-shop_dark_green tracking-wider"
-                    >
+                      className="font-semibold text-shop_dark_green tracking-wider">
                       {item?.title}
                     </p>
                   ))}
@@ -50,8 +47,7 @@ const LatestBlog = async () => {
               </div>
               <Link
                 href={`/blog/${blog?.slug?.current}`}
-                className="text-base font-semibold tracking-wide mt-5 line-clamp-2 hover:text-shop_dark_green hoverEffect"
-              >
+                className="text-base font-semibold tracking-wide mt-5 line-clamp-2 hover:text-shop_dark_green hoverEffect">
                 {blog?.title}
               </Link>
             </div>

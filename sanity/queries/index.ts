@@ -1,3 +1,4 @@
+import { Category } from "@/sanity.types";
 import { sanityFetch } from "../lib/live";
 import {
   BLOG_CATEGORIES,
@@ -12,7 +13,11 @@ import {
   SINGLE_BLOG_QUERY,
 } from "./query";
 
-const getCategories = async (quantity?: number) => {
+export type GET_CATEGORIES_rESULT = (Category & { productCount: number })[];
+
+const getCategories = async (
+  quantity?: number,
+): Promise<GET_CATEGORIES_rESULT> => {
   try {
     const query = quantity
       ? `*[_type == 'category'] | order(name asc) [0...$quantity] {
@@ -23,6 +28,7 @@ const getCategories = async (quantity?: number) => {
           ...,
           "productCount": count(*[_type == "product" && references(^._id)])
         }`;
+
     const { data } = await sanityFetch({
       query,
       params: quantity ? { quantity } : {},
@@ -56,7 +62,11 @@ const getLatestBlogs = async () => {
 const getDealProducts = async () => {
   try {
     const { data } = await sanityFetch({ query: DEAL_PRODUCTS });
-    return data ?? [];
+
+    return data.map((product) => ({
+      ...product,
+      categories: product.categories ?? [],
+    }));
   } catch (error) {
     console.log("Error fetching deal Products:", error);
     return [];
@@ -121,10 +131,10 @@ const getSingleBlog = async (slug: string) => {
       query: SINGLE_BLOG_QUERY,
       params: { slug },
     });
-    return data ?? [];
+    return data ?? null;
   } catch (error) {
     console.log("Error fetching all brands:", error);
-    return [];
+    return null;
   }
 };
 const getBlogCategories = async () => {

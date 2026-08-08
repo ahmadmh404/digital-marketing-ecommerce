@@ -35,8 +35,7 @@ const ProductCard = ({ product }: { product: Product }) => {
         ) : (
           <Link
             href={"/deal"}
-            className="absolute top-2 left-2 z-10 border border-shop_orange/50 p-1 rounded-full group-hover:border-shop_orange hover:text-shop_dark_green hoverEffect"
-          >
+            className="absolute top-2 left-2 z-10 border border-shop_orange/50 p-1 rounded-full group-hover:border-shop_orange hover:text-shop_dark_green hoverEffect">
             <Flame
               size={18}
               fill="#fb6c08"
@@ -70,8 +69,7 @@ const ProductCard = ({ product }: { product: Product }) => {
         <div className="flex items-center gap-2.5">
           <p className="font-medium">In Stock</p>
           <p
-            className={`${product?.stock === 0 ? "text-red-600" : "text-shop_dark_green/80 font-semibold"}`}
-          >
+            className={`${product?.stock === 0 ? "text-red-600" : "text-shop_dark_green/80 font-semibold"}`}>
             {(product?.stock as number) > 0 ? product?.stock : "unavailable"}
           </p>
         </div>

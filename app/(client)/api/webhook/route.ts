@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
   if (!sig) {
     return NextResponse.json(
       { error: "No Signature found for stripe" },
-      { status: 400 }
+      { status: 400 },
     );
   }
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
       {
         error: "Stripe webhook secret is not set",
       },
-      { status: 400 }
+      { status: 400 },
     );
   }
   let event: Stripe.Event;
@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
       {
         error: `Webhook Error: ${error}`,
       },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
         {
           error: `Error creating order: ${error}`,
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
   }
@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
 
 async function createOrderInSanity(
   session: Stripe.Checkout.Session,
-  invoice: Stripe.Invoice | null
+  invoice: Stripe.Invoice | null,
 ) {
   const {
     id,
@@ -78,7 +78,7 @@ async function createOrderInSanity(
 
   const lineItemsWithProduct = await stripe.checkout.sessions.listLineItems(
     id,
-    { expand: ["data.price.product"] }
+    { expand: ["data.price.product"] },
   );
 
   // Create Sanity product references and prepare stock updates
@@ -146,7 +146,7 @@ async function createOrderInSanity(
 
 // Function to update stock levels
 async function updateStockLevels(
-  stockUpdates: { productId: string; quantity: number }[]
+  stockUpdates: { productId: string; quantity: number }[],
 ) {
   for (const { productId, quantity } of stockUpdates) {
     try {
@@ -155,7 +155,7 @@ async function updateStockLevels(
 
       if (!product || typeof product.stock !== "number") {
         console.warn(
-          `Product with ID ${productId} not found or stock is invalid.`
+          `Product with ID ${productId} not found or stock is invalid.`,
         );
         continue;
       }

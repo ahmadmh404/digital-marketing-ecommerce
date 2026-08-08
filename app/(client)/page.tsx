@@ -1,6 +1,7 @@
 import Container from "@/components/Container";
 import HomeBanner from "@/components/HomeBanner";
 import HomeCategories from "@/components/HomeCategories";
+import { InitUser } from "@/components/InitUser";
 import LatestBlog from "@/components/LatestBlog";
 import ProductGrid from "@/components/ProductGrid";
 import ShopByBrands from "@/components/ShopByBrands";
@@ -13,6 +14,7 @@ const Home = async () => {
 
   return (
     <Container className="bg-shop-light-pink">
+      <InitUser />
       <HomeBanner />
       <ProductGrid />
       <HomeCategories categories={categories} />

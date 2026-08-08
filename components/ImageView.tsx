@@ -27,7 +27,6 @@ interface Props {
 
 const ImageView = ({ images = [], isStock }: Props) => {
   const [active, setActive] = useState(images[0]);
-  console.log(active);
 
   return (
     <div className="w-full md:w-1/2 space-y-2 md:space-y-4">
@@ -38,8 +37,7 @@ const ImageView = ({ images = [], isStock }: Props) => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
-          className="w-full max-h-[550px] min-h-[450px] border border-darkColor/10 rounded-md group overflow-hidden"
-        >
+          className="w-full max-h-[550px] min-h-[450px] border border-darkColor/10 rounded-md group overflow-hidden">
           <Image
             src={urlFor(active).url()}
             alt="productImage"
@@ -57,8 +55,7 @@ const ImageView = ({ images = [], isStock }: Props) => {
           <button
             key={image?._key}
             onClick={() => setActive(image)}
-            className={`border rounded-md overflow-hidden ${active?._key === image?._key ? "border-darkColor opacity-100" : "opacity-80"}`}
-          >
+            className={`border rounded-md overflow-hidden ${active?._key === image?._key ? "border-darkColor opacity-100" : "opacity-80"}`}>
             <Image
               src={urlFor(image).url()}
               alt={`Thumbnail ${image._key}`}

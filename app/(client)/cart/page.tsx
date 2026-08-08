@@ -71,7 +71,7 @@ const CartPage = () => {
   }, []);
   const handleResetCart = () => {
     const confirmed = window.confirm(
-      "Are you sure you want to reset your cart?"
+      "Are you sure you want to reset your cart?",
     );
     if (confirmed) {
       resetCart();
@@ -117,15 +117,13 @@ const CartPage = () => {
                       return (
                         <div
                           key={product?._id}
-                          className="border-b p-2.5 last:border-b-0 flex items-center justify-between gap-5"
-                        >
+                          className="border-b p-2.5 last:border-b-0 flex items-center justify-between gap-5">
                           <div className="flex flex-1 items-start gap-2 h-36 md:h-44">
                             {product?.images && (
                               <Link
                                 href={`/product/${product?.slug?.current}`}
                                 className="border p-0.5 md:p-1 mr-2 rounded-md
-                                 overflow-hidden group"
-                              >
+                                 overflow-hidden group">
                                 <Image
                                   src={urlFor(product?.images[0]).url()}
                                   alt="productImage"
@@ -173,7 +171,7 @@ const CartPage = () => {
                                         onClick={() => {
                                           deleteCartProduct(product?._id);
                                           toast.success(
-                                            "Product deleted successfully!"
+                                            "Product deleted successfully!",
                                           );
                                         }}
                                         className="w-4 h-4 md:w-5 md:h-5 mr-1 text-gray-500 hover:text-red-600 hoverEffect"
@@ -200,8 +198,7 @@ const CartPage = () => {
                     <Button
                       onClick={handleResetCart}
                       className="m-5 font-semibold"
-                      variant="destructive"
-                    >
+                      variant="destructive">
                       Reset Cart
                     </Button>
                   </div>
@@ -235,8 +232,7 @@ const CartPage = () => {
                           className="w-full rounded-full font-semibold tracking-wide hoverEffect"
                           size="lg"
                           disabled={loading}
-                          onClick={handleCheckout}
-                        >
+                          onClick={handleCheckout}>
                           {loading ? "Please wait..." : "Proceed to Checkout"}
                         </Button>
                       </div>
@@ -251,21 +247,18 @@ const CartPage = () => {
                             <RadioGroup
                               defaultValue={addresses
                                 ?.find((addr) => addr.default)
-                                ?._id.toString()}
-                            >
+                                ?._id.toString()}>
                               {addresses?.map((address) => (
                                 <div
                                   key={address?._id}
                                   onClick={() => setSelectedAddress(address)}
-                                  className={`flex items-center space-x-2 mb-4 cursor-pointer ${selectedAddress?._id === address?._id && "text-shop_dark_green"}`}
-                                >
+                                  className={`flex items-center space-x-2 mb-4 cursor-pointer ${selectedAddress?._id === address?._id && "text-shop_dark_green"}`}>
                                   <RadioGroupItem
                                     value={address?._id.toString()}
                                   />
                                   <Label
                                     htmlFor={`address-${address?._id}`}
-                                    className="grid gap-1.5 flex-1"
-                                  >
+                                    className="grid gap-1.5 flex-1">
                                     <span className="font-semibold">
                                       {address?.name}
                                     </span>
@@ -313,8 +306,7 @@ const CartPage = () => {
                         className="w-full rounded-full font-semibold tracking-wide hoverEffect"
                         size="lg"
                         disabled={loading}
-                        onClick={handleCheckout}
-                      >
+                        onClick={handleCheckout}>
                         {loading ? "Please wait..." : "Proceed to Checkout"}
                       </Button>
                     </div>

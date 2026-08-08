@@ -8,17 +8,20 @@ const LATEST_BLOG_QUERY = defineQuery(
       blogcategories[]->{
       title
     }
-    }`
+    }`,
 );
 
 const DEAL_PRODUCTS = defineQuery(
   `*[_type == 'product' && status == 'hot'] | order(name asc){
-    ...,"categories": categories[]->title
-  }`
+    ...,
+    categories[]{
+    ...
+    }
+  }`,
 );
 
 const PRODUCT_BY_SLUG_QUERY = defineQuery(
-  `*[_type == "product" && slug.current == $slug] | order(name asc) [0]`
+  `*[_type == "product" && slug.current == $slug] | order(name asc) [0]`,
 );
 
 const BRAND_QUERY = defineQuery(`*[_type == "product" && slug.current == $slug]{
@@ -36,9 +39,9 @@ const GET_ALL_BLOG = defineQuery(
   ...,  
      blogcategories[]->{
     title
-}
+      }
     }
-  `
+  `,
 );
 
 const SINGLE_BLOG_QUERY =
@@ -59,7 +62,7 @@ const BLOG_CATEGORIES = defineQuery(
      blogcategories[]->{
     ...
     }
-  }`
+  }`,
 );
 
 const OTHERS_BLOG_QUERY = defineQuery(`*[

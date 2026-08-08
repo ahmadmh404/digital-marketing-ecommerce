@@ -18,7 +18,7 @@ const ProductGrid = () => {
   const query = `*[_type == "product" && variant == $variant] | order(name asc){
   ...,"categories": categories[]->title
 }`;
-  const params = { variant: selectedTab.toLowerCase() };
+  const params: Record<string, string> = { variant: selectedTab.toLowerCase() };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,8 +54,7 @@ const ProductGrid = () => {
                   layout
                   initial={{ opacity: 0.2 }}
                   animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                >
+                  exit={{ opacity: 0 }}>
                   <ProductCard key={product?._id} product={product} />
                 </motion.div>
               </AnimatePresence>
