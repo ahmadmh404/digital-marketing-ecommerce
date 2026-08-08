@@ -1,9 +1,14 @@
 "use client";
 
-import { injectUserInfo } from "@/lib/inject-user-info";
+// import { injectUserInfo } from "@/lib/inject-user-info";
+import useStore from "@/store";
+import { useUser } from "@clerk/nextjs";
 
 export function InitUser() {
-  injectUserInfo();
+  const { user } = useUser();
+  const { initUserInfo } = useStore();
 
-  return null;
+  initUserInfo(user?.id || null);
+
+  return <></>;
 }

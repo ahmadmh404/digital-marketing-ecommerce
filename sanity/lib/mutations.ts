@@ -1,4 +1,3 @@
-import { generateOrderNumber } from "../../lib/utils";
 import type {
   Product,
   Order,
@@ -40,13 +39,8 @@ export const ecommerceMutations = {
   ) => {
     // First get current cart
     const cart = await backendClient
-      .fetch<{ _id: string; products: any[] }>(
-        `*[_type == "order" && _id == $cartId][0]`,
-        {
-          cartId: `cart-${sessionId}`,
-        },
-      )
-      .then((res: { _id: string; products: any[] } | null) => res)
+      .getDocument(`cart-${sessionId}`)
+      .then((res) => res)
       .catch(() => null);
 
     if (!cart) {
@@ -55,10 +49,8 @@ export const ecommerceMutations = {
 
     // Get product details
     const product = await backendClient
-      .fetch<Product>(`*[_type == "product" && _id == $productId][0]`, {
-        productId,
-      })
-      .then((res: Product | null) => res)
+      .getDocument<Product>(productId)
+      .then((res) => res)
       .catch(() => null);
 
     if (!product) {
@@ -95,16 +87,12 @@ export const ecommerceMutations = {
       updatedProducts.map(async (item: any) => {
         if (!item.product?._ref) return 0;
         const product = await backendClient
-          .fetch<Product>(`*[_type == "product" && _id == $productId][0]`, {
-            productId: item.product._ref,
-          })
-          .then((res: Product | null) => res)
+          .getDocument<Product>(item.product._ref)
+          .then((res) => res)
           .catch(() => null);
         return (product?.price || 0) * (item.quantity || 0);
       }),
-    ).then((prices: number[]) =>
-      prices.reduce((sum: number, price: number) => sum + price, 0),
-    );
+    ).then((prices) => prices.reduce((sum, price) => sum + price, 0));
 
     // Update cart
     return await backendClient
@@ -125,12 +113,7 @@ export const ecommerceMutations = {
     quantityToRemove: number = 1,
   ) => {
     const cart = await backendClient
-      .fetch<{ _id: string; products: any[] }>(
-        `*[_type == "order" && _id == $cartId][0]`,
-        {
-          cartId: `cart-${sessionId}`,
-        },
-      )
+      .getDocument(`cart-${sessionId}`)
       .then((res) => res)
       .catch(() => null);
 
@@ -162,10 +145,8 @@ export const ecommerceMutations = {
 
     // Get product price for total calculation
     const product = await backendClient
-      .fetch<Product>(`*[_type == "product" && _id == $productId][0]`, {
-        productId,
-      })
-      .then((res: Product | null) => res)
+      .getDocument<Product>(productId)
+      .then((res) => res)
       .catch(() => null);
 
     // Calculate new total
@@ -173,16 +154,12 @@ export const ecommerceMutations = {
       updatedProducts.map(async (item: any) => {
         if (!item.product?._ref) return 0;
         const product = await backendClient
-          .fetch<Product>(`*[_type == "product" && _id == $productId][0]`, {
-            productId: item.product._ref,
-          })
+          .getDocument<Product>(item.product._ref)
           .then((res) => res)
           .catch(() => null);
         return (product?.price || 0) * (item.quantity || 0);
       }),
-    ).then((prices: number[]) =>
-      prices.reduce((sum: number, price: number) => sum + price, 0),
-    );
+    ).then((prices) => prices.reduce((sum, price) => sum + price, 0));
 
     return await backendClient
       .patch(`cart-${sessionId}`)
@@ -206,12 +183,7 @@ export const ecommerceMutations = {
     }
 
     const cart = await backendClient
-      .fetch<{ _id: string; products: any[] }>(
-        `*[_type == "order" && _id == $cartId][0]`,
-        {
-          cartId: `cart-${sessionId}`,
-        },
-      )
+      .getDocument(`cart-${sessionId}`)
       .then((res) => res)
       .catch(() => null);
 
@@ -255,16 +227,12 @@ export const ecommerceMutations = {
       updatedProducts.map(async (item: any) => {
         if (!item.product?._ref) return 0;
         const product = await backendClient
-          .fetch<Product>(`*[_type == "product" && _id == $productId][0]`, {
-            productId: item.product._ref,
-          })
+          .getDocument<Product>(item.product._ref)
           .then((res) => res)
           .catch(() => null);
         return (product?.price || 0) * (item.quantity || 0);
       }),
-    ).then((prices: number[]) =>
-      prices.reduce((sum: number, price: number) => sum + price, 0),
-    );
+    ).then((prices) => prices.reduce((sum, price) => sum + price, 0));
 
     return await backendClient
       .patch(`cart-${sessionId}`)
@@ -307,21 +275,8 @@ export const ecommerceMutations = {
 
     // Get cart
     const cart = await backendClient
-      .fetch<{ _id: string; clerkUserId: string | null; products: any[] }>(
-        `*[_type == "order" && _id == $cartId][0]`,
-        {
-          cartId: `cart-${sessionId}`,
-        },
-      )
-      .then(
-        (
-          res: {
-            _id: string;
-            clerkUserId: string | null;
-            products: any[];
-          } | null,
-        ) => res,
-      )
+      .getDocument(`cart-${sessionId}`)
+      .then((res) => res)
       .catch(() => null);
 
     if (!cart) {
@@ -343,10 +298,8 @@ export const ecommerceMutations = {
         }
 
         const product = await backendClient
-          .fetch<Product>(`*[_type == "product" && _id == $productId][0]`, {
-            productId: item.product._ref,
-          })
-          .then((res: Product | null) => res)
+          .getDocument<Product>(item.product._ref)
+          .then((res) => res)
           .catch(() => null);
 
         if (!product) {
@@ -374,16 +327,12 @@ export const ecommerceMutations = {
       orderProducts.map(async (item: any) => {
         if (!item.product?._ref) return 0;
         const product = await backendClient
-          .fetch<Product>(`*[_type == "product" && _id == $productId][0]`, {
-            productId: item.product._ref,
-          })
+          .getDocument<Product>(item.product._ref)
           .then((res) => res)
           .catch(() => null);
         return (product?.price || 0) * (item.quantity || 0);
       }),
-    ).then((prices: number[]) =>
-      prices.reduce((sum: number, price: number) => sum + price, 0),
-    );
+    ).then((prices) => prices.reduce((sum, price) => sum + price, 0));
 
     // Create order document
     const orderData = {
@@ -410,7 +359,7 @@ export const ecommerceMutations = {
     // Add stock updates to transaction
     orderProducts.forEach((item: any) => {
       if (item.product?._ref && item.quantity) {
-        transaction.patch(item.product._ref, (product: any) =>
+        transaction.patch(item.product._ref, (product) =>
           product.inc({ stock: -item.quantity }),
         );
       }
@@ -420,8 +369,7 @@ export const ecommerceMutations = {
     transaction.delete(`cart-${sessionId}`);
 
     // Commit transaction
-    await transaction.commit();
-    return true;
+    return await transaction.commit();
   },
 
   /**
@@ -429,13 +377,8 @@ export const ecommerceMutations = {
    */
   getCart: async (sessionId: string) => {
     return await backendClient
-      .fetch<{ _id: string; products: any[] }>(
-        `*[_type == "order" && _id == $cartId][0]`,
-        {
-          cartId: `cart-${sessionId}`,
-        },
-      )
-      .then((res: { _id: string; products: any[] } | null) => res)
+      .getDocument(`cart-${sessionId}`)
+      .then((res) => res)
       .catch(() => null);
   },
 
@@ -456,5 +399,12 @@ export const ecommerceMutations = {
     return await backendClient.patch(orderId).set({ status }).commit();
   },
 };
+
+// Helper function to generate order numbers
+function generateOrderNumber(): string {
+  const timestamp = Date.now().toString().substr(-6);
+  const random = Math.random().toString(36).substr(2, 6).toUpperCase();
+  return `ORD-${timestamp}-${random}`;
+}
 
 export default ecommerceMutations;

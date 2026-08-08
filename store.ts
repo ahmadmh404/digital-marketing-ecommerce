@@ -1,7 +1,7 @@
 "use client";
 
 import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
+import { persist } from "zustand/middleware";
 import { Product, Order } from "./sanity.types";
 import { backendClient } from "./sanity/lib/backendClient";
 import { ecommerceMutations } from "./sanity/lib/mutations";
@@ -303,10 +303,6 @@ const useStore = create<StoreState>()(
     }),
     {
       name: "cart-store",
-      storage:
-        typeof window !== "undefined"
-          ? createJSONStorage(() => localStorage)
-          : undefined,
     },
   ),
 );
